@@ -94,9 +94,56 @@ class Car(Document):
     brand = StringField(max_length=120, required=True)
     color = StringField(max_length=120, required=True)
     model = StringField(max_length=120, required=True)
-    km = StringField(max_length=120, required=True)
-    plate = StringField(max_length=120, required=True)
-    year = StringField(max_length=120, required=True)
+    km = IntField(required=True)
+    plate = StringField(max_length=120, required=True, unique=True)
+    year = IntField(required=True)
     transmission = StringField(max_length=120, required=True)
     extras = StringField(max_length=120, required=False)
-    photos = ListField(StringField(max_length=250, required=False))
+    photos = ListField(StringField(required=False))
+
+    @classmethod
+    async def createCar(cls, newCar: NewCarParams):
+        msg = Message()
+        try:
+            doc = cls()
+            newCar = dict(newCar)
+            for key, value in newCar.items():
+                if value is not None:
+                    doc.__setattr__(key, value)
+            doc.user = User.objects.get(id=doc.user)
+            doc.save()
+            msg.addMessage('Data', json.loads(doc.to_json()))
+            return msg.data
+        except Exception as e:
+            msg.addMessage('Error', str(e))
+            return msg.data
+
+    @classmethod
+    async def updateCar(cls, newData: CarParams):
+        msg = Message()
+        try:
+            newData = dict(newData)
+            doc = cls.objects.get(id=newData.get('id'))
+            for key, value in newData.items():
+                if value is not None and key != 'user':
+                    doc.__setattr__(key, value)
+            doc.save()
+            msg.addMessage('Data', json.loads(doc.to_json()))
+            return msg.data
+        except Exception as e:
+            msg.addMessage('Error', str(e))
+            return msg.data
+
+    @classmethod
+    async def deleteCar(cls, newData: CarParams):
+        msg = Message()
+        try:
+            newData = dict(newData)
+            doc = cls.objects.get(id=newData.get('id'))
+            doc.delete()
+            msg.addMessage('Success', True)
+            return msg.data
+        except Exception as e:
+            msg.addMessage('Success', False)
+            msg.addMessage('Error', str(e))
+            return msg.data

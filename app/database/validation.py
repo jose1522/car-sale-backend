@@ -37,7 +37,7 @@ class AuthParams(BaseModel):
     password: str
 
 
-class CarParams(BaseModel):
+class NewCarParams(BaseModel):
     user: str
     brand: str
     color: str
@@ -47,7 +47,21 @@ class CarParams(BaseModel):
     year: int
     transmission: str
     extras: Optional[str] = None
-    photos: Optional[list]
+    photos: Optional[list] = None
+
+
+class CarParams(BaseModel):
+    id: str
+    user: Optional[str] = None
+    brand: Optional[str] = None
+    color: Optional[str] = None
+    model: Optional[str] = None
+    km: Optional[str] = None
+    plate: Optional[str] = None
+    year: Optional[int] = None
+    transmission: Optional[str] = None
+    extras: Optional[str] = None
+    photos: Optional[list] = None
 
 
 class TokenParams(BaseModel):
