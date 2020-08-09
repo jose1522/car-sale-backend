@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo
+    container_name: database
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    expose:
+      - 27017
+    ports:
+      - "27017:27017"
+
+  payment:
+    build:
+      context: https://github.com/jose1522/car-sale-backend.git
+      dockerfile: Dockerfile
+    container_name: backend-api
+    expose:
+      - 80
+    ports:
+      - "8080:80"

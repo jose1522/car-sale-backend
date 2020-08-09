@@ -1,0 +1,8 @@
+wheel
+fastapi
+motor
+uvicorn
+python-dotenv
+pydantic
+bcrypt
+python-jose
