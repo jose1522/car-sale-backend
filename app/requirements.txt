@@ -1,6 +1,6 @@
 wheel
 fastapi
-motor
+mongoengine
 uvicorn
 python-dotenv
 pydantic

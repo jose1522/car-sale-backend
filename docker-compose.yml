@@ -14,10 +14,8 @@ services:
     ports:
       - "27017:27017"
 
-  payment:
-    build:
-      context: https://github.com/jose1522/car-sale-backend.git
-      dockerfile: Dockerfile
+  api:
+    build: ./app
     container_name: backend-api
     expose:
       - 80
