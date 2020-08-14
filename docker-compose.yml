@@ -1,10 +1,17 @@
-version: '3.8'
+version: '3.4'
 
 services:
 
-  mongo:
+  nginx-cars:
+    build: ./nginx
+    container_name: nginx-cars
+    restart: always
+    ports:
+      - "80:80"
+
+  database-cars:
     image: mongo
-    container_name: database
+    container_name: database-cars
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
@@ -14,10 +21,9 @@ services:
     ports:
       - "27017:27017"
 
-  api:
+
+  api-cars:
     build: ./app
-    container_name: backend-api
+    container_name: api-cars
     expose:
       - 80
-    ports:
-      - "8080:80"

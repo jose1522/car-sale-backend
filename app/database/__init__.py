@@ -10,7 +10,8 @@ class Collections(Enum):
 
 # Creating connection and database
 localSettings = settings.Settings()
-connect(localSettings.mongoDBName,
+connect(db=localSettings.mongoDBName,
+        authentication_source='admin',
         username=localSettings.MongoUser,
         password=localSettings.MongoSecret,
         host=localSettings.mongouri)
