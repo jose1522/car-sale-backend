@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from database import validation, models
 from core.routerDependencies import oauth2_scheme, user_login
 from core.util.authentication import get_current_user
+from typing import Optional
 
 apiRouter = APIRouter()
 
@@ -17,7 +18,7 @@ async def test(user = Depends(user_login)):
     return user
 
 
-@apiRouter.get('/authenticate')
+@apiRouter.post('/authenticate')
 async def getUser(inputCredentials: validation.AuthParams):
     result = await models.User.authenticate(inputCredentials)
     return result
@@ -58,11 +59,11 @@ async def deleteUser(user = Depends(user_login)):
 
 @apiRouter.get('/car', dependencies=[Depends(user_login)])
 # @apiRouter.get('/car')
-async def getUserData(data: validation.CarParams):
-    if data.id == "" or not data.id:
+async def getUserData(carID: Optional[str]):
+    if carID == "all" or carID == "":
         result = await models.Car.getAll()
     else:
-        result = await  models.Car.getById(data)
+        result = await  models.Car.getById(carID)
     return result
 
 @apiRouter.post('/car', dependencies=[Depends(user_login)])

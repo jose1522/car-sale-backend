@@ -159,10 +159,9 @@ class Car(Document):
             return []
 
     @classmethod
-    async def getById(cls, carData: CarParams):
+    async def getById(cls, carID: str):
         try:
-            carData = dict(carData)
-            result = cls.objects.get(id=carData.get("id")).to_json()
+            result = cls.objects.get(id=carID).to_json()
             result = json.loads(result)
             return result
         except Exception as e:
