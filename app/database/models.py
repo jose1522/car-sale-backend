@@ -147,3 +147,24 @@ class Car(Document):
             msg.addMessage('Success', False)
             msg.addMessage('Error', str(e))
             return msg.data
+
+    @classmethod
+    async def getAll(cls):
+        try:
+            result = cls.objects().to_json()
+            result = json.loads(result)
+            return result
+        except Exception as e:
+            print(str(e))
+            return []
+
+    @classmethod
+    async def getById(cls, carData: CarParams):
+        try:
+            carData = dict(carData)
+            result = cls.objects.get(id=carData.get("id")).to_json()
+            result = json.loads(result)
+            return result
+        except Exception as e:
+            print(str(e))
+            return []

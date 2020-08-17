@@ -11,7 +11,8 @@ async def index():
     return {"hello" : "world"}
 
 
-@apiRouter.get('/test', dependencies=[Depends(user_login)])
+# @apiRouter.get('/test', dependencies=[Depends(user_login)])
+@apiRouter.get('/test')
 async def test(user = Depends(user_login)):
     return user
 
@@ -34,17 +35,18 @@ async def newUser(newUser: validation.NewUserParams):
 
 
 @apiRouter.get('/user', dependencies=[Depends(user_login)])
+# @apiRouter.get('/user')
 async def getUserData(user = Depends(user_login)):
     return user
 
-
 @apiRouter.put('/user', dependencies=[Depends(user_login)])
+# @apiRouter.put('/user')
 async def updateUser(data: validation.UserParams, user = Depends(user_login)):
     result = await models.User.updateUser(user, data)
     return result
 
-
 @apiRouter.delete('/user', dependencies=[Depends(user_login)])
+# @apiRouter.delete('/user')
 async def deleteUser(user = Depends(user_login)):
     result = await models.User.deleteUser(user)
     return result
@@ -54,25 +56,29 @@ async def deleteUser(user = Depends(user_login)):
 # Car-related endpoints
 ################################################################
 
-
 @apiRouter.get('/car', dependencies=[Depends(user_login)])
-async def getUserData(user = Depends(user_login)):
-    return user
-
+# @apiRouter.get('/car')
+async def getUserData(data: validation.CarParams):
+    if data.id == "" or not data.id:
+        result = await models.Car.getAll()
+    else:
+        result = await  models.Car.getById(data)
+    return result
 
 @apiRouter.post('/car', dependencies=[Depends(user_login)])
+# @apiRouter.post('/car')
 async def newCar(newCar: validation.NewCarParams):
     result = await models.Car.createCar(newCar)
     return result
 
-
 @apiRouter.put('/car', dependencies=[Depends(user_login)])
+# @apiRouter.put('/car')
 async def updateCar(data: validation.CarParams):
     result = await models.Car.updateCar(data)
     return result
 
-
 @apiRouter.delete('/car', dependencies=[Depends(user_login)])
+# @apiRouter.delete('/car')
 async def deleteCar(data: validation.CarParams):
     result = await models.Car.deleteCar(data)
     return result
