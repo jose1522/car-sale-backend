@@ -7,5 +7,5 @@ from .routerDependencies import *
 
 def create_app():
     app = FastAPI()
-    app.include_router(apiRouter, dependencies=[Depends(get_token_header)])
+    app.include_router(apiRouter)
     return app
