@@ -99,7 +99,7 @@ class Car(Document):
     year = IntField(required=True)
     transmission = StringField(max_length=120, required=True)
     extras = StringField(max_length=120, required=False)
-    photos = ListField(StringField(required=False))
+    photos = StringField(required=False)
 
     @classmethod
     async def createCar(cls, newCar: NewCarParams):
