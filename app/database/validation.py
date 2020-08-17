@@ -47,7 +47,7 @@ class NewCarParams(BaseModel):
     year: int
     transmission: str
     extras: Optional[str] = None
-    photos: Optional[list] = None
+    photos: Optional[str] = None
 
 
 class CarParams(BaseModel):
@@ -61,7 +61,7 @@ class CarParams(BaseModel):
     year: Optional[int] = None
     transmission: Optional[str] = None
     extras: Optional[str] = None
-    photos: Optional[list] = None
+    photos: Optional[str] = None
 
 
 class TokenParams(BaseModel):
