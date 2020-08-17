@@ -59,8 +59,8 @@ async def deleteUser(user = Depends(user_login)):
 
 @apiRouter.get('/car', dependencies=[Depends(user_login)])
 # @apiRouter.get('/car')
-async def getUserData(carID: Optional[str]):
-    if carID == "all" or carID == "":
+async def getUserData(carID: Optional[str] = None):
+    if carID == "all" or carID == "" or not carID:
         result = await models.Car.getAll()
     else:
         result = await  models.Car.getById(carID)
