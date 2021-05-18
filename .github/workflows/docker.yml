@@ -5,12 +5,12 @@ on: [push]
 env:
   DOCKER_USER: ${{ secrets.DOCKER_USER }}
   DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-  IMAGE_NAME: $DOCKER_USER/docker-build-test:1.0.0
+  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/docker-build-test:1.0.0
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v2
 
