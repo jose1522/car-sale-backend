@@ -1,0 +1,24 @@
+name: Test Docker Build
+
+on: [push]
+
+env:
+  DOCKER_USER: ${{ secrets.DOCKER_USER }}
+  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+  IMAGE_NAME: $DOCKER_USER/docker-build-test:1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build ./api -t $IMAGE_NAME
+
+      - name: Registry Login
+        run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      - name: Push to registry
+        run: docker push IMAGE_NAME
