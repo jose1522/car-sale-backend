@@ -9,7 +9,7 @@ apiRouter = APIRouter()
 
 @apiRouter.get('/')
 async def index():
-    return {"hello" : "world"}
+    return {"hello" : "world updated"}
 
 
 # @apiRouter.get('/test', dependencies=[Depends(user_login)])
