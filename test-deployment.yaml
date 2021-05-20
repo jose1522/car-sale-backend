@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deployment
+  labels:
+    app: test-deployment
+spec:
+  replicas: 2
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: test-deployment
+  template:
+    metadata:
+      labels:
+        app: test-deployment
+    spec:
+      containers:
+        - name: test-pod
+          image: ghcr.io/jose1522/docker-build-test:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /docs
+              port: 80
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
