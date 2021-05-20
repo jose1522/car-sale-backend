@@ -1,24 +1,39 @@
 name: Test Docker Build
 
-on: [push]
+on:   
+  push:
+    branches:
+      - master
 
+    tags:
+      - v*
 env:
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-  IMAGE_NAME: ghcr.io/${{ secrets.DOCKER_USER }}/docker-build-test:latest
+  IMAGE_NAME: docker-build-test
 
 jobs:
-  build:
+  push:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build ./app -t $IMAGE_NAME
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
-      - name: Registry Login
-        run: docker login ghcr.io -u $DOCKER_USER -p $DOCKER_PASS
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Push to registry
-        run: docker push $IMAGE_NAME
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
