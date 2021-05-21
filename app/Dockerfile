@@ -1,7 +1,7 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:latest
 WORKDIR /
 RUN ls -a
-ADD . ./app
+ADD ./app ./app
 RUN ls -a
 RUN ls -a ../
 RUN ls -a /app
