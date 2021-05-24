@@ -4,6 +4,10 @@ metadata:
   name: test-deployment
   labels:
     app: test-deployment
+  annotations:
+    keel.sh/policy: all
+    keel.sh/trigger: poll
+    keel.sh/pollSchedule: "@every 1m"
 spec:
   replicas: 2
   revisionHistoryLimit: 1
@@ -31,3 +35,5 @@ spec:
               port: 80
             initialDelaySeconds: 30
             timeoutSeconds: 10
+      imagePullSecrets:
+        - name: docker-basic-auth
