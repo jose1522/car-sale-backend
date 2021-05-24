@@ -16,9 +16,6 @@ spec:
       app: test-deployment
   template:
     metadata:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "80"
       labels:
         app: test-deployment
     spec:
