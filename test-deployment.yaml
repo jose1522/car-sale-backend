@@ -5,8 +5,12 @@ metadata:
   labels:
     app: test-deployment
 spec:
-  replicas: 3
+  replicas: 2
   revisionHistoryLimit: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
   selector:
     matchLabels:
       app: test-deployment
