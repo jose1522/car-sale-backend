@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deployment
+spec:
+  minReadySeconds: 3
+  replicas: 2
+  revisionHistoryLimit: 1
+  progressDeadlineSeconds: 60
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: test-deployment
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9797"
+      labels:
+        app: test-deployment
+    spec:
+      containers:
+      - name: test-deployment
+        image: ghcr.io/jose1522/docker-build-test:latest
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+        livenessProbe:
+                    httpGet:
+                      path: /docs
+                      port: 80
+                    initialDelaySeconds: 30
+                    timeoutSeconds: 10
+                
